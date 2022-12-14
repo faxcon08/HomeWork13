@@ -1,7 +1,13 @@
+import java.util.Objects;
+
 public class Book {
     private String bookName = "DEFAULT_BOOK_NAME";
     private final Author author;
     private int publishingYear;
+
+    static private int bookCounter =1;
+
+    private final int bookNumber;
 
     private final int firstPublishingYear = 1445;
     private final int defaultYear = 2000;
@@ -13,6 +19,7 @@ public class Book {
         }
 
         this.author = author;
+        this.bookNumber=bookCounter++;
 
         if (publishingYear>= firstPublishingYear) {
             this.publishingYear = publishingYear;
@@ -40,7 +47,22 @@ public class Book {
     public String getAuthor() {
         return this.author.getFullName();
     }
+
+    @Override
     public String toString() {
-        return String.format("Книга: %30s Автор: %15s год выпуска - %4d г.",this.getBookName(),this.author,this.getPublishingYear());
+        return String.format("Книга %d: %25s Автор: %15s год выпуска - %4d г.",this.bookNumber,this.getBookName(),this.author,this.getPublishingYear());
     }// toString
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return publishingYear == book.publishingYear && bookName.equals(book.bookName) && author.equals(book.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookName, author, publishingYear);
+    }
 }
